@@ -1,4 +1,4 @@
-# CreatorSync 2.0 — Full-Stack Scaffold
+# CreatorSync
 
 A MERN-stack rebuild of the CreatorSync influencer-marketing platform, generated from the
 production roadmap. This is a working scaffold: backend REST API + React frontend wired
