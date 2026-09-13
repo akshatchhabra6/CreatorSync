@@ -1,84 +1,343 @@
 # CreatorSync
 
-A MERN-stack rebuild of the CreatorSync influencer-marketing platform, generated from the
-production roadmap. This is a working scaffold: backend REST API + React frontend wired
-together, ready for you to connect a MongoDB Atlas cluster and deploy.
+CreatorSync is a full-stack MERN application that connects content creators with brands for campaign discovery, campaign management, and collaboration.
 
-## Structure
+The application provides separate workflows for Creators and Brands with JWT-based authentication and role-based authorization.
 
+## Features
+
+### Creator
+
+* Sign up and login
+* Manage creator profile
+* Browse available campaigns
+* View campaign details
+* Apply to campaigns
+* Track submitted applications
+
+### Brand
+
+* Sign up and login
+* Manage brand profile
+* Create campaigns
+* Manage created campaigns
+* View campaign applicants
+* Update application status
+
+### Authentication
+
+* JWT-based authentication
+* Password hashing using bcrypt
+* Protected API routes
+* Role-based authorization
+* Separate Creator and Brand access
+
+### Campaigns
+
+* Create and manage campaigns
+* Browse available campaigns
+* View campaign details
+* Filter campaigns
+* Brand-specific campaign management
+
+### Applications
+
+* Creators can apply to campaigns
+* Duplicate applications are prevented
+* Brands can view applications
+* Brands can update application status
+
+## Tech Stack
+
+### Frontend
+
+* React
+* Vite
+* Tailwind CSS
+* React Router
+* Axios
+
+### Backend
+
+* Node.js
+* Express.js
+* MongoDB
+* Mongoose
+* JWT
+* bcrypt
+
+### Deployment
+
+* Frontend: Vercel
+* Backend: Render
+* Database: MongoDB Atlas
+
+## Architecture
+
+```text
+CreatorSync
+│
+├── frontend
+│   ├── React
+│   ├── Vite
+│   ├── Tailwind CSS
+│   ├── React Router
+│   └── Axios
+│
+├── backend
+│   ├── Node.js
+│   ├── Express.js
+│   ├── Mongoose
+│   └── REST APIs
+│
+└── MongoDB Atlas
 ```
-CreatorSync/
-├── backend/     Express + Mongoose REST API (JWT auth, bcrypt)
-└── frontend/    React + Vite + Tailwind CSS, React Router, Axios
+
+Application flow:
+
+```text
+Creator / Brand
+       |
+       v
+React Frontend
+       |
+     Axios
+       |
+       v
+Express REST API
+       |
+       v
+MongoDB
 ```
 
-## Quick Start
+## Authentication Flow
 
-### 1. Backend
+The application uses JWT for authentication.
+
+```text
+User
+ |
+ | Signup / Login
+ v
+Express API
+ |
+ | Validate credentials
+ v
+JWT Token
+ |
+ v
+Frontend
+ |
+ | Authenticated requests
+ v
+Protected API Routes
+```
+
+Passwords are hashed using bcrypt before being stored in the database.
+
+Role-based authorization restricts access according to the user's role:
+
+```text
+Creator → Creator-specific operations
+Brand   → Brand-specific operations
+```
+
+## Data Models
+
+The backend contains the following main models:
+
+```text
+User
+CreatorProfile
+Brand
+Campaign
+Application
+Message
+```
+
+### User
+
+Stores authentication and user information including:
+
+* Name
+* Email
+* Password hash
+* Role
+
+Supported roles:
+
+```text
+creator
+brand
+```
+
+### Campaign
+
+Stores campaigns created by brands and made available to creators.
+
+### Application
+
+Connects creators with campaigns and stores the application status.
+
+Duplicate applications for the same campaign are prevented.
+
+### Message
+
+A Message model exists in the backend, but real-time messaging using Socket.IO is not currently implemented.
+
+## Frontend Structure
+
+The frontend contains separate workflows for Creators and Brands.
+
+### Authentication
+
+* Login
+* Signup
+* Role selection
+
+### Creator
+
+* Creator Dashboard
+* Creator Profile
+* Campaign Discovery
+* Campaign Details
+* Campaign Application
+
+### Brand
+
+* Brand Dashboard
+* Brand Profile
+* Campaign Creation
+* Campaign Management
+* Applicant Management
+
+The frontend communicates with the backend through Axios-based API services.
+
+## Environment Variables
+
+### Backend
+
+Create a `.env` file inside the backend directory:
+
+```env
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+PORT=5000
+```
+
+### Frontend
+
+Create a `.env` file inside the frontend directory:
+
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+For production, `VITE_API_URL` should point to the deployed backend API.
+
+Do not commit `.env` files or secrets to the repository.
+
+## Getting Started
+
+### Clone Repository
+
+```bash
+git clone https://github.com/akshatchhabra6/CreatorSync.git
+
+cd CreatorSync
+```
+
+### Backend
 
 ```bash
 cd backend
 npm install
-cp .env.example .env
-# edit .env: set MONGO_URI to your MongoDB Atlas connection string, and JWT_SECRET
 npm run dev
 ```
-Runs on `http://localhost:5000`. Health check: `GET /api/health`.
 
-### 2. Frontend
+Backend:
+
+```text
+http://localhost:5000
+```
+
+### Frontend
+
+Open a new terminal:
 
 ```bash
 cd frontend
 npm install
-cp .env.example .env
-# VITE_API_URL=http://localhost:5000/api
 npm run dev
 ```
-Runs on `http://localhost:5173`.
 
-## What's implemented
+Frontend:
 
-**Backend**
-- User model with bcrypt password hashing, role field (`creator` / `brand`)
-- JWT auth: signup, login, get/update profile, `protect` + `authorize(role)` middleware
-- CreatorProfile, Brand, Campaign, Application, Message models
-- Full REST routes for creators, brands, campaigns, applications (matches the roadmap's API list)
-- Campaigns support filtering (`status`, `platform`, `niche`, `mine=true` for a brand's own campaigns)
-- Applications: creators apply once per campaign (unique index), brands update status
+```text
+http://localhost:5173
+```
 
-**Frontend**
-- Auth context (JWT stored client-side), protected routes by role
-- Login / Signup with Creator ↔ Brand role toggle (mirrors original UI)
-- Creator Dashboard, Creator Profile (editable), Discover Campaigns, Campaign Details (apply flow)
-- Brand Dashboard (campaign table with live applicant counts), Brand Profile (editable), New Campaign form
-- All pages call the real backend via Axios services in `src/services/`
+## Deployment
 
-## Not yet built (bonus features from the roadmap)
+The application uses separate deployment environments for the frontend and backend.
 
-These were intentionally left out of this pass to keep the scaffold lean — happy to add any of
-them next:
-- Real-time chat (Socket.io) — `Message` model exists, no live socket layer yet
-- Email verification / forgot password
-- Cloudinary image uploads (profile/portfolio images are plain URL fields for now)
-- AI creator recommendation / campaign description generator
-- Admin panel
-- Notifications
+```text
+React + Vite
+     |
+     v
+   Vercel
+     |
+     | API Requests
+     v
+Node + Express
+     |
+     v
+   Render
+     |
+     v
+MongoDB Atlas
+```
 
-## Deployment (per roadmap)
+For the frontend production build:
 
-| Layer     | Target          |
-|-----------|-----------------|
-| Frontend  | Vercel          |
-| Backend   | Render          |
-| Database  | MongoDB Atlas   |
-| Images    | Cloudinary      |
+```bash
+npm run build
+```
 
-Both `backend` and `frontend` have `.env.example` files — set the real values as environment
-variables in Vercel/Render dashboards rather than committing `.env`.
+Environment variables should be configured separately for local development and production.
 
-## Verified working
+## Current Status
 
-- Backend: all files pass `node --check`, `npm install` succeeds
-- Frontend: `npm run build` succeeds cleanly (Vite production build, no errors)
+### Implemented
 
-You'll still need your own MongoDB Atlas URI to actually run the API against a live database.
+* React + Vite frontend
+* Node.js + Express backend
+* MongoDB integration
+* JWT authentication
+* bcrypt password hashing
+* Role-based authorization
+* Protected routes
+* Creator profiles
+* Brand profiles
+* Campaign creation and management
+* Campaign discovery and filtering
+* Campaign applications
+* Application status management
+* Axios API integration
+
+### Planned
+
+* Real-time chat using Socket.IO
+* Cloudinary image uploads
+* Email verification
+* Password reset
+* Notifications
+* Admin dashboard
+* AI-based creator recommendations
+* AI campaign description generation
+
+## Author
+
+Akshat Chhabra
+
+GitHub: https://github.com/akshatchhabra6
