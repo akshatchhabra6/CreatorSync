@@ -1,223 +1,112 @@
 # CreatorSync
 
-CreatorSync is a full-stack MERN application that connects content creators with brands for campaign discovery, campaign management, and collaboration.
+CreatorSync is a full-stack brand–influencer collaboration platform designed to simplify the process of discovering creators, launching campaigns, and managing collaborations.
 
-The application provides separate workflows for Creators and Brands with JWT-based authentication and role-based authorization.
+The platform provides separate experiences for Brands and Creators, with role-based authentication and campaign management features.
+
+## Links
+
+* Live Demo: https://creator-sync-mocha.vercel.app/
+* GitHub Repository: https://github.com/akshatchhabra6/CreatorSync
 
 ## Features
 
 ### Creator
 
-* Sign up and login
-* Manage creator profile
-* Browse available campaigns
+* Create and manage creator profile
+* Discover available brand campaigns
 * View campaign details
-* Apply to campaigns
-* Track submitted applications
+* Apply to suitable campaigns
+* Track campaign applications
+* Manage creator information
 
 ### Brand
 
-* Sign up and login
-* Manage brand profile
-* Create campaigns
-* Manage created campaigns
-* View campaign applicants
-* Update application status
-
-### Authentication
-
-* JWT-based authentication
-* Password hashing using bcrypt
-* Protected API routes
-* Role-based authorization
-* Separate Creator and Brand access
-
-### Campaigns
-
+* Create and manage brand profile
 * Create and manage campaigns
-* Browse available campaigns
-* View campaign details
-* Filter campaigns
-* Brand-specific campaign management
+* Discover creators
+* View creator applications
+* Manage campaign applicants
+* Track campaign-related activities
 
-### Applications
+### Authentication and Security
 
-* Creators can apply to campaigns
-* Duplicate applications are prevented
-* Brands can view applications
-* Brands can update application status
+* Role-based authentication
+* JWT-based authentication
+* Protected routes
+* Password hashing using bcrypt
+* Secure API communication
 
 ## Tech Stack
 
 ### Frontend
 
-* React
+* React.js
+* JavaScript
+* HTML5
+* CSS3
 * Vite
-* Tailwind CSS
-* React Router
-* Axios
 
 ### Backend
 
 * Node.js
 * Express.js
+* REST APIs
+
+### Database
+
 * MongoDB
 * Mongoose
-* JWT
-* bcrypt
 
-### Deployment
+### Tools and Deployment
 
-* Frontend: Vercel
-* Backend: Render
-* Database: MongoDB Atlas
+* Git
+* GitHub
+* VS Code
+* Vercel
 
-## Architecture
+## Project Structure
 
 ```text
-CreatorSync
+CreatorSync/
 │
-├── frontend
-│   ├── React
-│   ├── Vite
-│   ├── Tailwind CSS
-│   ├── React Router
-│   └── Axios
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   └── package.json
 │
-├── backend
-│   ├── Node.js
-│   ├── Express.js
-│   ├── Mongoose
-│   └── REST APIs
+├── backend/
+│   ├── config/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   ├── server.js
+│   └── package.json
 │
-└── MongoDB Atlas
+├── .gitignore
+└── README.md
 ```
 
-Application flow:
+## Getting Started
 
-```text
-Creator / Brand
-       |
-       v
-React Frontend
-       |
-     Axios
-       |
-       v
-Express REST API
-       |
-       v
-MongoDB
+Follow these steps to run CreatorSync locally.
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/akshatchhabra6/CreatorSync.git
+cd CreatorSync
 ```
 
-## Authentication Flow
+### 2. Setup Backend
 
-The application uses JWT for authentication.
-
-```text
-User
- |
- | Signup / Login
- v
-Express API
- |
- | Validate credentials
- v
-JWT Token
- |
- v
-Frontend
- |
- | Authenticated requests
- v
-Protected API Routes
+```bash
+cd backend
+npm install
 ```
 
-Passwords are hashed using bcrypt before being stored in the database.
-
-Role-based authorization restricts access according to the user's role:
-
-```text
-Creator → Creator-specific operations
-Brand   → Brand-specific operations
-```
-
-## Data Models
-
-The backend contains the following main models:
-
-```text
-User
-CreatorProfile
-Brand
-Campaign
-Application
-Message
-```
-
-### User
-
-Stores authentication and user information including:
-
-* Name
-* Email
-* Password hash
-* Role
-
-Supported roles:
-
-```text
-creator
-brand
-```
-
-### Campaign
-
-Stores campaigns created by brands and made available to creators.
-
-### Application
-
-Connects creators with campaigns and stores the application status.
-
-Duplicate applications for the same campaign are prevented.
-
-### Message
-
-A Message model exists in the backend, but real-time messaging using Socket.IO is not currently implemented.
-
-## Frontend Structure
-
-The frontend contains separate workflows for Creators and Brands.
-
-### Authentication
-
-* Login
-* Signup
-* Role selection
-
-### Creator
-
-* Creator Dashboard
-* Creator Profile
-* Campaign Discovery
-* Campaign Details
-* Campaign Application
-
-### Brand
-
-* Brand Dashboard
-* Brand Profile
-* Campaign Creation
-* Campaign Management
-* Applicant Management
-
-The frontend communicates with the backend through Axios-based API services.
-
-## Environment Variables
-
-### Backend
-
-Create a `.env` file inside the backend directory:
+Create a `.env` file inside the `backend` folder:
 
 ```env
 MONGO_URI=your_mongodb_connection_string
@@ -225,43 +114,13 @@ JWT_SECRET=your_jwt_secret
 PORT=5000
 ```
 
-### Frontend
-
-Create a `.env` file inside the frontend directory:
-
-```env
-VITE_API_URL=http://localhost:5000/api
-```
-
-For production, `VITE_API_URL` should point to the deployed backend API.
-
-Do not commit `.env` files or secrets to the repository.
-
-## Getting Started
-
-### Clone Repository
+Start the backend:
 
 ```bash
-git clone https://github.com/akshatchhabra6/CreatorSync.git
-
-cd CreatorSync
+npm start
 ```
 
-### Backend
-
-```bash
-cd backend
-npm install
-npm run dev
-```
-
-Backend:
-
-```text
-http://localhost:5000
-```
-
-### Frontend
+### 3. Setup Frontend
 
 Open a new terminal:
 
@@ -271,73 +130,75 @@ npm install
 npm run dev
 ```
 
-Frontend:
+The application will be available at the local Vite URL shown in the terminal.
+
+## Screenshots
+
+### Home Page
+
+Add homepage screenshot here.
+
+### Creator Dashboard
+
+Add creator dashboard screenshot here.
+
+### Brand Dashboard
+
+Add brand dashboard screenshot here.
+
+### Campaign Management
+
+Add campaign management screenshot here.
+
+## Application Workflow
 
 ```text
-http://localhost:5173
+Brand
+  |
+  |-- Create Profile
+  |-- Create Campaign
+  |-- Review Creator Applications
+  |
+  v
+Creator
+  |
+  |-- Create Profile
+  |-- Discover Campaigns
+  |-- Apply to Campaigns
 ```
 
-## Deployment
+## Project Objective
 
-The application uses separate deployment environments for the frontend and backend.
+CreatorSync aims to provide a centralized platform where brands can connect with relevant creators and manage influencer campaigns efficiently, while creators can discover collaboration opportunities and apply to campaigns that match their interests.
 
-```text
-React + Vite
-     |
-     v
-   Vercel
-     |
-     | API Requests
-     v
-Node + Express
-     |
-     v
-   Render
-     |
-     v
-MongoDB Atlas
-```
+## Future Enhancements
 
-For the frontend production build:
-
-```bash
-npm run build
-```
-
-Environment variables should be configured separately for local development and production.
-
-## Current Status
-
-### Implemented
-
-* React + Vite frontend
-* Node.js + Express backend
-* MongoDB integration
-* JWT authentication
-* bcrypt password hashing
-* Role-based authorization
-* Protected routes
-* Creator profiles
-* Brand profiles
-* Campaign creation and management
-* Campaign discovery and filtering
-* Campaign applications
-* Application status management
-* Axios API integration
-
-### Planned
-
-* Real-time chat using Socket.IO
-* Cloudinary image uploads
-* Email verification
-* Password reset
-* Notifications
-* Admin dashboard
+* Real-time messaging between brands and creators
+* Email notifications
+* Cloud-based media uploads
+* Advanced creator search and filtering
 * AI-based creator recommendations
-* AI campaign description generation
+* Campaign analytics
 
-## Author
+## What I Learned
 
-Akshat Chhabra
+Through this project, I gained practical experience in:
 
-GitHub: https://github.com/akshatchhabra6
+* Full-stack web application development
+* REST API development
+* MongoDB database integration
+* JWT authentication and authorization
+* Role-based access control
+* Frontend and backend integration
+* Git and GitHub workflow
+* Deployment and environment configuration
+
+## Developer
+
+**Akshat Chhabra**
+
+B.Tech Computer Science Engineering
+JECRC University
+
+* GitHub: https://github.com/akshatchhabra6
+* LinkedIn: Add your LinkedIn profile URL here
