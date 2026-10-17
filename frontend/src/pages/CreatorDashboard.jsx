@@ -15,29 +15,37 @@ const statusStyles = {
 
 const CreatorDashboard = () => {
   const { user } = useAuth();
+
   const [applications, setApplications] = useState([]);
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    (async () => {
+    const fetchDashboardData = async () => {
       try {
         const [apps, camps] = await Promise.all([
           applicationService.getApplications(),
           campaignService.getCampaigns({ status: 'active' }),
         ]);
+
         setApplications(apps);
         setCampaigns(camps.slice(0, 3));
       } catch (err) {
-        console.error(err);
+        console.error('Failed to load creator dashboard:', err);
       } finally {
         setLoading(false);
       }
-    })();
+    };
+
+    fetchDashboardData();
   }, []);
 
   const activeCount = applications.filter(
-    (a) => a.status === 'accepted'
+    (app) => app.status === 'accepted'
+  ).length;
+
+  const pendingCount = applications.filter(
+    (app) => app.status === 'pending'
   ).length;
 
   return (
@@ -56,6 +64,7 @@ const CreatorDashboard = () => {
           label="Active Collabs"
           value={activeCount}
         />
+
         <StatCard
           icon="fa-file-lines"
           label="Total Applications"
@@ -63,10 +72,11 @@ const CreatorDashboard = () => {
           bg="bg-accent-light"
           color="text-accent"
         />
+
         <StatCard
           icon="fa-hourglass-half"
           label="Pending Review"
-          value={applications.filter((a) => a.status === 'pending').length}
+          value={pendingCount}
           bg="bg-emerald-50"
           color="text-emerald-600"
         />
@@ -96,12 +106,13 @@ const CreatorDashboard = () => {
                   <div className="font-medium">
                     {app.campaign?.title || 'Campaign'}
                   </div>
+
                   <div className="text-xs text-slate-400">
                     {app.campaign?.brand?.companyName || ''}
                   </div>
                 </div>
 
-                <span className={`badge ${statusStyles[app.status]}`}>
+                <span className={`badge ${statusStyles[app.status] || ''}`}>
                   {app.status}
                 </span>
               </div>
@@ -113,24 +124,26 @@ const CreatorDashboard = () => {
           <h3 className="font-semibold mb-4">Recommended</h3>
 
           <div className="flex flex-col gap-3">
-            {campaigns.map((c) => (
+            {campaigns.map((campaign) => (
               <div
-                key={c._id}
+                key={campaign._id}
                 className="border border-slate-200 rounded-lg p-3"
               >
-                <h4 className="font-medium mb-1">{c.title}</h4>
+                <h4 className="font-medium mb-1">
+                  {campaign.title}
+                </h4>
 
                 <p className="text-xs text-slate-500 mb-2">
-                  {c.brand?.companyName}
+                  {campaign.brand?.companyName}
                 </p>
 
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-semibold text-accent">
-                    ₹{c.budget?.min}-₹{c.budget?.max}
+                    ₹{campaign.budget?.min}-₹{campaign.budget?.max}
                   </span>
 
                   <Link
-                    to={`/campaigns/${c._id}`}
+                    to={`/campaigns/${campaign._id}`}
                     className="btn btn-primary py-1.5 px-3 text-sm"
                   >
                     Apply
