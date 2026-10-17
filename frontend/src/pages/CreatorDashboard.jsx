@@ -1,3 +1,4 @@
+```jsx
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import DashboardLayout from '../components/DashboardLayout';
@@ -35,7 +36,9 @@ const CreatorDashboard = () => {
     })();
   }, []);
 
-  const activeCount = applications.filter((a) => a.status === 'accepted').length;
+  const activeCount = applications.filter(
+    (a) => a.status === 'accepted'
+  ).length;
 
   return (
     <DashboardLayout
@@ -48,7 +51,11 @@ const CreatorDashboard = () => {
       }
     >
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        <StatCard icon="fa-bullhorn" label="Active Collabs" value={activeCount} />
+        <StatCard
+          icon="fa-bullhorn"
+          label="Active Collabs"
+          value={activeCount}
+        />
         <StatCard
           icon="fa-file-lines"
           label="Total Applications"
@@ -68,20 +75,35 @@ const CreatorDashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <section className="card lg:col-span-2">
           <h3 className="font-semibold mb-4">Recent Applications</h3>
-          {loading && <p className="text-slate-400 text-sm">Loading...</p>}
-          {!loading && applications.length === 0 && (
-            <p className="text-slate-400 text-sm">No applications yet. Go find a campaign!</p>
+
+          {loading && (
+            <p className="text-slate-400 text-sm">Loading...</p>
           )}
+
+          {!loading && applications.length === 0 && (
+            <p className="text-slate-400 text-sm">
+              No applications yet. Go find a campaign!
+            </p>
+          )}
+
           <div className="flex flex-col divide-y divide-slate-100">
             {applications.map((app) => (
-              <div key={app._id} className="flex items-center justify-between py-3">
+              <div
+                key={app._id}
+                className="flex items-center justify-between py-3"
+              >
                 <div>
-                  <div className="font-medium">{app.campaign?.title || 'Campaign'}</div>
+                  <div className="font-medium">
+                    {app.campaign?.title || 'Campaign'}
+                  </div>
                   <div className="text-xs text-slate-400">
                     {app.campaign?.brand?.companyName || ''}
                   </div>
                 </div>
-                <span className={`badge ${statusStyles[app.status]}`}>{app.status}</span>
+
+                <span className={`badge ${statusStyles[app.status]}`}>
+                  {app.status}
+                </span>
               </div>
             ))}
           </div>
@@ -89,23 +111,38 @@ const CreatorDashboard = () => {
 
         <section className="card">
           <h3 className="font-semibold mb-4">Recommended</h3>
+
           <div className="flex flex-col gap-3">
             {campaigns.map((c) => (
-              <div key={c._id} className="border border-slate-200 rounded-lg p-3">
+              <div
+                key={c._id}
+                className="border border-slate-200 rounded-lg p-3"
+              >
                 <h4 className="font-medium mb-1">{c.title}</h4>
-                <p className="text-xs text-slate-500 mb-2">{c.brand?.companyName}</p>
+
+                <p className="text-xs text-slate-500 mb-2">
+                  {c.brand?.companyName}
+                </p>
+
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-semibold text-accent">
-                    ${c.budget?.min}-${c.budget?.max}
+                    ₹{c.budget?.min}-₹{c.budget?.max}
                   </span>
-                  <Link to={`/campaigns/${c._id}`} className="btn btn-primary py-1.5 px-3 text-sm">
+
+                  <Link
+                    to={`/campaigns/${c._id}`}
+                    className="btn btn-primary py-1.5 px-3 text-sm"
+                  >
                     Apply
                   </Link>
                 </div>
               </div>
             ))}
+
             {!loading && campaigns.length === 0 && (
-              <p className="text-slate-400 text-sm">No active campaigns right now.</p>
+              <p className="text-slate-400 text-sm">
+                No active campaigns right now.
+              </p>
             )}
           </div>
         </section>
@@ -115,3 +152,4 @@ const CreatorDashboard = () => {
 };
 
 export default CreatorDashboard;
+```
