@@ -155,4 +155,14 @@ const CreatorDashboard = () => {
 
             {!loading && campaigns.length === 0 && (
               <p className="text-slate-400 text-sm">
-                No active
+                No active campaigns right now.
+              </p>
+            )}
+          </div>
+        </section>
+      </div>
+    </DashboardLayout>
+  );
+};
+
+export default CreatorDashboard;
