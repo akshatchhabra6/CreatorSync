@@ -15,7 +15,6 @@ const statusStyles = {
 
 const CreatorDashboard = () => {
   const { user } = useAuth();
-
   const [applications, setApplications] = useState([]);
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -50,7 +49,7 @@ const CreatorDashboard = () => {
 
   return (
     <DashboardLayout
-      title="Welcome back, Creator 👋"
+      title={`Welcome back, ${user?.name?.split(' ')[0] || 'Creator'} 👋`}
       subtitle="Here's what's happening with your collaborations today."
       action={
         <Link to="/campaigns" className="btn btn-primary">
@@ -112,7 +111,9 @@ const CreatorDashboard = () => {
                   </div>
                 </div>
 
-                <span className={`badge ${statusStyles[app.status] || ''}`}>
+                <span
+                  className={`badge ${statusStyles[app.status] || ''}`}
+                >
                   {app.status}
                 </span>
               </div>
@@ -134,12 +135,12 @@ const CreatorDashboard = () => {
                 </h4>
 
                 <p className="text-xs text-slate-500 mb-2">
-                  {campaign.brand?.companyName}
+                  {campaign.brand?.companyName || ''}
                 </p>
 
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-semibold text-accent">
-                    ₹{campaign.budget?.min}-₹{campaign.budget?.max}
+                    ₹{campaign.budget?.min ?? 0} - ₹{campaign.budget?.max ?? 0}
                   </span>
 
                   <Link
