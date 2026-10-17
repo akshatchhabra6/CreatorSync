@@ -49,7 +49,7 @@ const CreatorDashboard = () => {
 
   return (
     <DashboardLayout
-      title={`Welcome back, ${user?.name?.split(' ')[0] || 'Creator'} 👋`}
+      title="Welcome back, Creator"
       subtitle="Here's what's happening with your collaborations today."
       action={
         <Link to="/campaigns" className="btn btn-primary">
