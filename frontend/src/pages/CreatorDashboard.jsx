@@ -1,4 +1,3 @@
-```jsx
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import DashboardLayout from '../components/DashboardLayout';
@@ -6,6 +5,7 @@ import StatCard from '../components/StatCard';
 import { useAuth } from '../context/AuthContext';
 import * as applicationService from '../services/applicationService';
 import * as campaignService from '../services/campaignService';
+import { formatINR } from '../utils/formatCurrency';
 
 const statusStyles = {
   pending: 'bg-amber-100 text-amber-700',
@@ -140,7 +140,7 @@ const CreatorDashboard = () => {
 
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-semibold text-accent">
-                    ₹{campaign.budget?.min ?? 0} - ₹{campaign.budget?.max ?? 0}
+                    {formatINR(campaign.budget?.min)} - {formatINR(campaign.budget?.max)}
                   </span>
 
                   <Link
@@ -155,15 +155,4 @@ const CreatorDashboard = () => {
 
             {!loading && campaigns.length === 0 && (
               <p className="text-slate-400 text-sm">
-                No active campaigns right now.
-              </p>
-            )}
-          </div>
-        </section>
-      </div>
-    </DashboardLayout>
-  );
-};
-
-export default CreatorDashboard;
-```
+                No active
